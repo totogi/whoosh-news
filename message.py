@@ -45,31 +45,31 @@ def grab_and_send():
 
     linkRequest1 = {
         "destination": f"{url_one}", 
-        "domain": { "fullName": "rebrand.ly" },
+        "domain": { "fullName": "news.pkmeiner.com" },
         "slashtag": "article-one"
     }
 
     linkRequest2 = {
         "destination": f"{url_two}", 
-        "domain": { "fullName": "rebrand.ly" },
+        "domain": { "fullName": "news.pkmeiner.com" },
         "slashtag": "article-two"
     }
 
     linkRequest3 = {
         "destination": f"{url_three}", 
-        "domain": { "fullName": "rebrand.ly" },
+        "domain": { "fullName": "news.pkmeiner.com" },
         "slashtag": "article-three"
     }
 
     linkRequest4 = {
         "destination": f"{url_four}", 
-        "domain": { "fullName": "rebrand.ly" },
+        "domain": { "fullName": "news.pkmeiner.com" },
         "slashtag": "article-four"
     }
 
     linkRequest5 = {
         "destination": f"{url_five}",
-        "domain": { "fullName": "rebrand.ly" },
+        "domain": { "fullName": "news.pkmeiner.com" },
         "slashtag": "article-five"
     }
 
@@ -114,27 +114,27 @@ def grab_and_send():
     except:
         linkRequest1 = {
             "destination": f"{url_one}", 
-            "domain": { "fullName": "rebrand.ly" }
+            "domain": { "fullName": "news.pkmeiner.com" }
         }
 
         linkRequest2 = {
             "destination": f"{url_two}", 
-            "domain": { "fullName": "rebrand.ly" }
+            "domain": { "fullName": "news.pkmeiner.com" }
         }
 
         linkRequest3 = {
             "destination": f"{url_three}", 
-            "domain": { "fullName": "rebrand.ly" }
+            "domain": { "fullName": "news.pkmeiner.com" }
         }
 
         linkRequest4 = {
             "destination": f"{url_four}", 
-            "domain": { "fullName": "rebrand.ly" }
+            "domain": { "fullName": "news.pkmeiner.com" }
         }
 
         linkRequest5 = {
             "destination": f"{url_five}",
-            "domain": { "fullName": "rebrand.ly" }
+            "domain": { "fullName": "news.pkmeiner.com" }
         }
 
         r1 = requests.post("https://api.rebrandly.com/v1/links", 
@@ -175,15 +175,14 @@ def grab_and_send():
                         to='+18179751776'
                     )
 
-    message2 = client.messages \
-                    .create(
-                        body=f"Current Top Articles For: {month} {day}, {year} \n\n\n{id_one} - {title_one}\n{short_url_1}\n\n{id_two} - {title_two}\n{short_url_2}\n\n{id_three} - {title_three}\n{short_url_3}\n\n{id_four} - {title_four}\n{short_url_4}\n\n{id_five} - {title_five}\n{short_url_5}",
-                        from_='+19108074989',
-                        to='+18173082476'
-                    )
+    # message2 = client.messages \
+    #                 .create(
+    #                     body=f"Current Top Articles For: {month} {day}, {year} \n\n\n{id_one} - {title_one}\n{short_url_1}\n\n{id_two} - {title_two}\n{short_url_2}\n\n{id_three} - {title_three}\n{short_url_3}\n\n{id_four} - {title_four}\n{short_url_4}\n\n{id_five} - {title_five}\n{short_url_5}",
+    #                     from_='+19108074989',
+    #                     to='+18173082476'
+    #                 )
 
     print(message.sid)
-    print(message2.sid)
 
     time.sleep(82800)
 
