@@ -79,38 +79,94 @@ def grab_and_send():
     "workspace": "9fc8b4f6b1224ac59dbdaed9d1d9f2ce"
     }
 
-    r1 = requests.post("https://api.rebrandly.com/v1/links", 
-        data = json.dumps(linkRequest1),
-        headers=requestHeaders)
+    try:
+        r1 = requests.post("https://api.rebrandly.com/v1/links", 
+            data = json.dumps(linkRequest1),
+            headers=requestHeaders)
 
-    r2 = requests.post("https://api.rebrandly.com/v1/links", 
-        data = json.dumps(linkRequest2),
-        headers=requestHeaders)
+        r2 = requests.post("https://api.rebrandly.com/v1/links", 
+            data = json.dumps(linkRequest2),
+            headers=requestHeaders)
 
-    r3 = requests.post("https://api.rebrandly.com/v1/links", 
-        data = json.dumps(linkRequest3),
-        headers=requestHeaders)
+        r3 = requests.post("https://api.rebrandly.com/v1/links", 
+            data = json.dumps(linkRequest3),
+            headers=requestHeaders)
 
-    r4 = requests.post("https://api.rebrandly.com/v1/links", 
-        data = json.dumps(linkRequest4),
-        headers=requestHeaders)
+        r4 = requests.post("https://api.rebrandly.com/v1/links", 
+            data = json.dumps(linkRequest4),
+            headers=requestHeaders)
 
-    r5 = requests.post("https://api.rebrandly.com/v1/links", 
-        data = json.dumps(linkRequest5),
-        headers=requestHeaders)
+        r5 = requests.post("https://api.rebrandly.com/v1/links", 
+            data = json.dumps(linkRequest5),
+            headers=requestHeaders)
 
+        link1 = r1.json()
+        link2 = r2.json()
+        link3 = r3.json()
+        link4 = r4.json()
+        link5 = r5.json()
+        short_url_1 = f'https://{link1["shortUrl"]}'
+        short_url_2 = f'https://{link2["shortUrl"]}'
+        short_url_3 = f'https://{link3["shortUrl"]}'
+        short_url_4 = f'https://{link4["shortUrl"]}'
+        short_url_5 = f'https://{link5["shortUrl"]}'
 
+    except:
+        linkRequest1 = {
+            "destination": f"{url_one}", 
+            "domain": { "fullName": "rebrand.ly" }
+        }
 
-    link1 = r1.json()
-    link2 = r2.json()
-    link3 = r3.json()
-    link4 = r4.json()
-    link5 = r5.json()
-    short_url_1 = f'https://{link1["shortUrl"]}'
-    short_url_2 = f'https://{link2["shortUrl"]}'
-    short_url_3 = f'https://{link3["shortUrl"]}'
-    short_url_4 = f'https://{link4["shortUrl"]}'
-    short_url_5 = f'https://{link5["shortUrl"]}'
+        linkRequest2 = {
+            "destination": f"{url_two}", 
+            "domain": { "fullName": "rebrand.ly" }
+        }
+
+        linkRequest3 = {
+            "destination": f"{url_three}", 
+            "domain": { "fullName": "rebrand.ly" }
+        }
+
+        linkRequest4 = {
+            "destination": f"{url_four}", 
+            "domain": { "fullName": "rebrand.ly" }
+        }
+
+        linkRequest5 = {
+            "destination": f"{url_five}",
+            "domain": { "fullName": "rebrand.ly" }
+        }
+
+        r1 = requests.post("https://api.rebrandly.com/v1/links", 
+            data = json.dumps(linkRequest1),
+            headers=requestHeaders)
+
+        r2 = requests.post("https://api.rebrandly.com/v1/links", 
+            data = json.dumps(linkRequest2),
+            headers=requestHeaders)
+
+        r3 = requests.post("https://api.rebrandly.com/v1/links", 
+            data = json.dumps(linkRequest3),
+            headers=requestHeaders)
+
+        r4 = requests.post("https://api.rebrandly.com/v1/links", 
+            data = json.dumps(linkRequest4),
+            headers=requestHeaders)
+
+        r5 = requests.post("https://api.rebrandly.com/v1/links", 
+            data = json.dumps(linkRequest5),
+            headers=requestHeaders)
+
+        link1 = r1.json()
+        link2 = r2.json()
+        link3 = r3.json()
+        link4 = r4.json()
+        link5 = r5.json()
+        short_url_1 = f'https://{link1["shortUrl"]}'
+        short_url_2 = f'https://{link2["shortUrl"]}'
+        short_url_3 = f'https://{link3["shortUrl"]}'
+        short_url_4 = f'https://{link4["shortUrl"]}'
+        short_url_5 = f'https://{link5["shortUrl"]}'
 
     message = client.messages \
                     .create(
