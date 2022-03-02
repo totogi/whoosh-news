@@ -5,33 +5,7 @@ import time
 import schedule
 from twilio.rest import Client
 
-def grab_and_send():
-    URL = 'https://newsapi.org/v2/top-headlines?sources=bcc-news,associated-press,reuters,the-wall-street-journal&apiKey=8a39aada2dd443caaabf84c4fae03cc8'
-    account_sid = 'AC745b3d471c3796f0653026c1bc26ba7d'
-    auth_token = 'b715d4a19b17c714358e51f80e70842a'
-    client = Client(account_sid, auth_token)
-
-    #Articles sourced through newsapi.org
-    response = requests.get(URL)
-
-    id_one = response.json().get("articles")[0].get("source").get("name")
-    id_two = response.json().get("articles")[1].get("source").get("name")
-    id_three = response.json().get("articles")[2].get("source").get("name")
-    id_four = response.json().get("articles")[3].get("source").get("name")
-    id_five = response.json().get("articles")[4].get("source").get("name")
-
-    title_one = response.json().get("articles")[0].get("title")
-    title_two = response.json().get("articles")[1].get("title")
-    title_three = response.json().get("articles")[2].get("title")
-    title_four = response.json().get("articles")[3].get("title")
-    title_five = response.json().get("articles")[4].get("title")
-
-    url_one = response.json().get("articles")[0].get("url")
-    url_two = response.json().get("articles")[1].get("url")
-    url_three = response.json().get("articles")[2].get("url")
-    url_four = response.json().get("articles")[3].get("url")
-    url_five = response.json().get("articles")[4].get("url")
-
+def get_time():
     month_name = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May", 6:"June", 7:"July", 8:"August", 9:"September", 10:"October", 11:"November", 12:"December"}
 
     current_time = datetime.datetime.now()
@@ -41,135 +15,9 @@ def grab_and_send():
     day = current_time.day
     month = month_name.get(month_num)
 
-    #Links shortened with rebrandly.com
+    return(f"{month} {day}, {year}")
 
-    linkRequest1 = {
-        "destination": f"{url_one}", 
-        "domain": { "fullName": "news.pkmeiner.com" },
-        "slashtag": "article-one"
-    }
-
-    linkRequest2 = {
-        "destination": f"{url_two}", 
-        "domain": { "fullName": "news.pkmeiner.com" },
-        "slashtag": "article-two"
-    }
-
-    linkRequest3 = {
-        "destination": f"{url_three}", 
-        "domain": { "fullName": "news.pkmeiner.com" },
-        "slashtag": "article-three"
-    }
-
-    linkRequest4 = {
-        "destination": f"{url_four}", 
-        "domain": { "fullName": "news.pkmeiner.com" },
-        "slashtag": "article-four"
-    }
-
-    linkRequest5 = {
-        "destination": f"{url_five}",
-        "domain": { "fullName": "news.pkmeiner.com" },
-        "slashtag": "article-five"
-    }
-
-    requestHeaders = {
-    "Content-type": "application/json",
-    "apikey": "a654e5313c8d4d89980a508fb67979b5",
-    "workspace": "9fc8b4f6b1224ac59dbdaed9d1d9f2ce"
-    }
-
-    try:
-        r1 = requests.post("https://api.rebrandly.com/v1/links", 
-            data = json.dumps(linkRequest1),
-            headers=requestHeaders)
-
-        r2 = requests.post("https://api.rebrandly.com/v1/links", 
-            data = json.dumps(linkRequest2),
-            headers=requestHeaders)
-
-        r3 = requests.post("https://api.rebrandly.com/v1/links", 
-            data = json.dumps(linkRequest3),
-            headers=requestHeaders)
-
-        r4 = requests.post("https://api.rebrandly.com/v1/links", 
-            data = json.dumps(linkRequest4),
-            headers=requestHeaders)
-
-        r5 = requests.post("https://api.rebrandly.com/v1/links", 
-            data = json.dumps(linkRequest5),
-            headers=requestHeaders)
-
-        link1 = r1.json()
-        link2 = r2.json()
-        link3 = r3.json()
-        link4 = r4.json()
-        link5 = r5.json()
-        short_url_1 = f'https://{link1["shortUrl"]}'
-        short_url_2 = f'https://{link2["shortUrl"]}'
-        short_url_3 = f'https://{link3["shortUrl"]}'
-        short_url_4 = f'https://{link4["shortUrl"]}'
-        short_url_5 = f'https://{link5["shortUrl"]}'
-
-    except:
-        linkRequest1 = {
-            "destination": f"{url_one}", 
-            "domain": { "fullName": "news.pkmeiner.com" }
-        }
-
-        linkRequest2 = {
-            "destination": f"{url_two}", 
-            "domain": { "fullName": "news.pkmeiner.com" }
-        }
-
-        linkRequest3 = {
-            "destination": f"{url_three}", 
-            "domain": { "fullName": "news.pkmeiner.com" }
-        }
-
-        linkRequest4 = {
-            "destination": f"{url_four}", 
-            "domain": { "fullName": "news.pkmeiner.com" }
-        }
-
-        linkRequest5 = {
-            "destination": f"{url_five}",
-            "domain": { "fullName": "news.pkmeiner.com" }
-        }
-
-        r1 = requests.post("https://api.rebrandly.com/v1/links", 
-            data = json.dumps(linkRequest1),
-            headers=requestHeaders)
-
-        r2 = requests.post("https://api.rebrandly.com/v1/links", 
-            data = json.dumps(linkRequest2),
-            headers=requestHeaders)
-
-        r3 = requests.post("https://api.rebrandly.com/v1/links", 
-            data = json.dumps(linkRequest3),
-            headers=requestHeaders)
-
-        r4 = requests.post("https://api.rebrandly.com/v1/links", 
-            data = json.dumps(linkRequest4),
-            headers=requestHeaders)
-
-        r5 = requests.post("https://api.rebrandly.com/v1/links", 
-            data = json.dumps(linkRequest5),
-            headers=requestHeaders)
-
-        link1 = r1.json()
-        link2 = r2.json()
-        link3 = r3.json()
-        link4 = r4.json()
-        link5 = r5.json()
-        short_url_1 = f'https://{link1["shortUrl"]}'
-        short_url_2 = f'https://{link2["shortUrl"]}'
-        short_url_3 = f'https://{link3["shortUrl"]}'
-        short_url_4 = f'https://{link4["shortUrl"]}'
-        short_url_5 = f'https://{link5["shortUrl"]}'
-
-    #Weather data provided from WeatherAPI.com
-
+def get_weather():
     URL = 'https://api.weatherapi.com/v1/forecast.json?key=58860c9ca7bf4e2b8b613232222402&q=Grand Prairie&days=1&aqi=no&alerts=no'
 
     response = requests.get(URL)
@@ -183,87 +31,132 @@ def grab_and_send():
     snow = round(response.json().get("forecast").get("forecastday")[0].get("day").get("daily_chance_of_snow"))
 
     if rain > 1 and snow < 1:
-        message = client.messages \
-                        .create(
-                            body=f"Current Top Articles For: {month} {day}, {year} \n\n\n{id_one} - {title_one}\n{short_url_1}\n\n{id_two} - {title_two}\n{short_url_2}\n\n{id_three} - {title_three}\n{short_url_3}\n\n{id_four} - {title_four}\n{short_url_4}\n\n{id_five} - {title_five}\n{short_url_5}\n\n\nWEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind} mph\nRain - {rain}%",
-                            from_='+19108074989',
-                            to='+18179751776'
-                        )
-        print(message.sid)
-
-        message2 = client.messages \
-                        .create(
-                            body=f"Current Top Articles For: {month} {day}, {year} \n\n\n{id_one} - {title_one}\n{short_url_1}\n\n{id_two} - {title_two}\n{short_url_2}\n\n{id_three} - {title_three}\n{short_url_3}\n\n{id_four} - {title_four}\n{short_url_4}\n\n{id_five} - {title_five}\n{short_url_5}\n\n\nWEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind} mph\nRain - {rain}%",
-                            from_='+19108074989',
-                            to='+18173082476'
-                        )
-        print(message2.sid)
-
-    elif rain < 1 and snow > 1:
-        message = client.messages \
-                        .create(
-                            body=f"Current Top Articles For: {month} {day}, {year} \n\n\n{id_one} - {title_one}\n{short_url_1}\n\n{id_two} - {title_two}\n{short_url_2}\n\n{id_three} - {title_three}\n{short_url_3}\n\n{id_four} - {title_four}\n{short_url_4}\n\n{id_five} - {title_five}\n{short_url_5}\n\n\nWEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind} mph\nSnow - {snow}%",
-                            from_='+19108074989',
-                            to='+18179751776'
-                        )
-        print(message.sid)
-
-        message2 = client.messages \
-                        .create(
-                            body=f"Current Top Articles For: {month} {day}, {year} \n\n\n{id_one} - {title_one}\n{short_url_1}\n\n{id_two} - {title_two}\n{short_url_2}\n\n{id_three} - {title_three}\n{short_url_3}\n\n{id_four} - {title_four}\n{short_url_4}\n\n{id_five} - {title_five}\n{short_url_5}\n\n\nWEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind} mph\nSnow - {snow}%",
-                            from_='+19108074989',
-                            to='+18173082476'
-                        )
-        print(message2.sid)    
+        return(f"WEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind} mph\nRain - {rain}%")
+    
+    elif snow > 1 and rain < 1:
+        return(f"WEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind} mph\nSnow - {snow}%")
 
     elif rain > 1 and snow > 1:
-        message = client.messages \
-                        .create(
-                            body=f"Current Top Articles For: {month} {day}, {year} \n\n\n{id_one} - {title_one}\n{short_url_1}\n\n{id_two} - {title_two}\n{short_url_2}\n\n{id_three} - {title_three}\n{short_url_3}\n\n{id_four} - {title_four}\n{short_url_4}\n\n{id_five} - {title_five}\n{short_url_5}\n\n\nWEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind} mph\nRain - {rain}%\nSnow - {snow}%",
-                            from_='+19108074989',
-                            to='+18179751776'
-                        )
-        print(message.sid)
-
-        message2 = client.messages \
-                        .create(
-                            body=f"Current Top Articles For: {month} {day}, {year} \n\n\n{id_one} - {title_one}\n{short_url_1}\n\n{id_two} - {title_two}\n{short_url_2}\n\n{id_three} - {title_three}\n{short_url_3}\n\n{id_four} - {title_four}\n{short_url_4}\n\n{id_five} - {title_five}\n{short_url_5}\n\n\nWEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind} mph\nRain - {rain}%\nSnow - {snow}%",
-                            from_='+19108074989',
-                            to='+18173082476'
-                        )
-        print(message2.sid)
-
+        return(f"WEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind} mph\nRain - {rain}%\nSnow - {snow}%")
+    
     else:
-        message = client.messages \
-                        .create(
-                            body=f"Current Top Articles For: {month} {day}, {year} \n\n\n{id_one} - {title_one}\n{short_url_1}\n\n{id_two} - {title_two}\n{short_url_2}\n\n{id_three} - {title_three}\n{short_url_3}\n\n{id_four} - {title_four}\n{short_url_4}\n\n{id_five} - {title_five}\n{short_url_5}\n\n\nWEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind} mph",
-                            from_='+19108074989',
-                            to='+18179751776'
-                        )
-        print(message.sid)
+        return(f"WEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind} mph")
 
-        message2 = client.messages \
-                        .create(
-                            body=f"Current Top Articles For: {month} {day}, {year} \n\n\n{id_one} - {title_one}\n{short_url_1}\n\n{id_two} - {title_two}\n{short_url_2}\n\n{id_three} - {title_three}\n{short_url_3}\n\n{id_four} - {title_four}\n{short_url_4}\n\n{id_five} - {title_five}\n{short_url_5}\n\n\nWEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind} mph",
-                            from_='+19108074989',
-                            to='+18173082476'
-                        )
-        print(message2.sid)
+URL = 'https://newsapi.org/v2/top-headlines?sources=bcc-news,associated-press,reuters,the-wall-street-journal&apiKey=8a39aada2dd443caaabf84c4fae03cc8'
 
-    time.sleep(82800)
+response = requests.get(URL)
 
-    requests.delete(f'https://api.rebrandly.com/v1/links/{link1["id"]}', 
+requestHeaders = {
+    "Content-type": "application/json",
+    "apikey": "a654e5313c8d4d89980a508fb67979b5",
+    "workspace": "9fc8b4f6b1224ac59dbdaed9d1d9f2ce"
+}
+
+def get_url(url):
+    url_one = response.json().get("articles")[0].get("url")
+    url_two = response.json().get("articles")[1].get("url")
+    url_three = response.json().get("articles")[2].get("url")
+    url_four = response.json().get("articles")[3].get("url")
+    url_five = response.json().get("articles")[4].get("url")
+    if url == "url_one":
+        return(url_one)
+    elif url == "url_two":
+        return(url_two)
+    elif url == "url_three":
+        return(url_three)
+    elif url == "url_four":
+        return(url_four)
+    elif url == "url_five":
+        return(url_five)
+
+def request_link(url, art_num):
+    return{
+        "destination": f"{get_url(f'{url}')}", 
+        "domain": { "fullName": "news.pkmeiner.com" },
+        "slashtag": f"article-{art_num}"
+    }
+
+def post_request(url, art_num):
+    r = requests.post("https://api.rebrandly.com/v1/links", 
+        data = json.dumps(request_link(f'{url}', f'{art_num}')),
+        headers=requestHeaders)
+
+    return(r.json())
+
+def news():
+    try:
+        id_one = response.json().get("articles")[0].get("source").get("name")
+        id_two = response.json().get("articles")[1].get("source").get("name")
+        id_three = response.json().get("articles")[2].get("source").get("name")
+        id_four = response.json().get("articles")[3].get("source").get("name")
+        id_five = response.json().get("articles")[4].get("source").get("name")
+
+        title_one = response.json().get("articles")[0].get("title")
+        title_two = response.json().get("articles")[1].get("title")
+        title_three = response.json().get("articles")[2].get("title")
+        title_four = response.json().get("articles")[3].get("title")
+        title_five = response.json().get("articles")[4].get("title")
+
+        short_url_1 = f"https://{post_request('url_one', 'one')['shortUrl']}"
+        short_url_2 = f"https://{post_request('url_two', 'two')['shortUrl']}"
+        short_url_3 = f"https://{post_request('url_three', 'three')['shortUrl']}"
+        short_url_4 = f"https://{post_request('url_four', 'four')['shortUrl']}"
+        short_url_5 = f"https://{post_request('url_five', 'five')['shortUrl']}"
+
+        return(f"{id_one} - {title_one}\n{short_url_1}\n\n{id_two} - {title_two}\n{short_url_2}\n\n{id_three} - {title_three}\n{short_url_3}\n\n{id_four} - {title_four}\n{short_url_4}\n\n{id_five} - {title_five}\n{short_url_5}")
+    except:
+        del_links()
+
+def get_request(art_num):
+    r = requests.get(f"https://api.rebrandly.com/v1/links?domain.fullName=news.pkmeiner.com&slashtag=article-{art_num}", 
+        headers=requestHeaders)
+
+    return r.json()
+
+def del_links():
+    requests.delete(f"https://api.rebrandly.com/v1/links/{get_request('one')[0]['id']}", 
     headers=requestHeaders)
-    requests.delete(f'https://api.rebrandly.com/v1/links/{link2["id"]}', 
+    requests.delete(f"https://api.rebrandly.com/v1/links/{get_request('two')[0]['id']}", 
     headers=requestHeaders)
-    requests.delete(f'https://api.rebrandly.com/v1/links/{link3["id"]}', 
+    requests.delete(f"https://api.rebrandly.com/v1/links/{get_request('three')[0]['id']}", 
     headers=requestHeaders)
-    requests.delete(f'https://api.rebrandly.com/v1/links/{link4["id"]}', 
+    requests.delete(f"https://api.rebrandly.com/v1/links/{get_request('four')[0]['id']}",  
     headers=requestHeaders)
-    requests.delete(f'https://api.rebrandly.com/v1/links/{link5["id"]}', 
+    requests.delete(f"https://api.rebrandly.com/v1/links/{get_request('five')[0]['id']}", 
     headers=requestHeaders)
 
-schedule.every().day.at("11:00").do(grab_and_send)
+
+def grab_and_send():
+    account_sid = 'AC745b3d471c3796f0653026c1bc26ba7d'
+    auth_token = 'b715d4a19b17c714358e51f80e70842a'
+    client = Client(account_sid, auth_token)
+
+    print(get_time())
+    print(news())
+    print(get_weather())
+
+
+    # message = client.messages \
+    #                 .create(
+    #                     body=f"Current Top Articles For: {get_time()}\n\n\n{news()}\n\n\n{get_weather()}",
+    #                     from_='+19108074989',
+    #                     to='+18179751776'
+    #                 )
+    # print(message.sid)
+
+    # message2 = client.messages \
+    #                 .create(
+    #                     body=f"Current Top Articles For: {get_time()} \n\n\n{news()}\n\n\n{get_weather()}",
+    #                     from_='+19108074989',
+    #                     to='+18173082476'
+    #                 )
+    # print(message2.sid)
+
+
+    time.sleep(5)
+    del_links()
+
+schedule.every().day.at("23:13").do(grab_and_send)
 
 while True:
     schedule.run_pending()
