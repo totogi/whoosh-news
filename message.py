@@ -95,7 +95,7 @@ def news():
 
         return(f"{id_one} - {title_one}\n{short_url_1}\n\n{id_two} - {title_two}\n{short_url_2}\n\n{id_three} - {title_three}\n{short_url_3}\n\n{id_four} - {title_four}\n{short_url_4}\n\n{id_five} - {title_five}\n{short_url_5}")
     except:
-        return "API DOWN/CODE BROKEN"
+        print("API DOWN/CODE BROKEN")
 
 def get_request(art_num):
     r = requests.get(f"https://api.rebrandly.com/v1/links?domain.fullName=news.pkmeiner.com&slashtag=article-{art_num}", 
@@ -116,7 +116,7 @@ def del_links():
         requests.delete(f"https://api.rebrandly.com/v1/links/{get_request('five')[0]['id']}", 
         headers=requestHeaders)
     except:
-        return("ERROR ON LINK DELETION")
+        print("ERROR ON LINK DELETION")
 
 def grab_and_send():
     account_sid = 'AC745b3d471c3796f0653026c1bc26ba7d'
@@ -131,8 +131,8 @@ def grab_and_send():
             to = f'{number}'
         )
 
-schedule.every().day.at("08:43").do(grab_and_send)
-schedule.every().day.at("08:44").do(del_links)
+schedule.every().day.at("11:00").do(grab_and_send)
+schedule.every().day.at("10:00").do(del_links)
 
 while True:
     schedule.run_pending()
