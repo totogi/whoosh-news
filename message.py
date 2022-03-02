@@ -168,21 +168,87 @@ def grab_and_send():
         short_url_4 = f'https://{link4["shortUrl"]}'
         short_url_5 = f'https://{link5["shortUrl"]}'
 
-    message = client.messages \
-                    .create(
-                        body=f"Current Top Articles For: {month} {day}, {year} \n\n\n{id_one} - {title_one}\n{short_url_1}\n\n{id_two} - {title_two}\n{short_url_2}\n\n{id_three} - {title_three}\n{short_url_3}\n\n{id_four} - {title_four}\n{short_url_4}\n\n{id_five} - {title_five}\n{short_url_5}",
-                        from_='+19108074989',
-                        to='+18179751776'
-                    )
+    #Weather data provided from WeatherAPI.com
 
-    # message2 = client.messages \
-    #                 .create(
-    #                     body=f"Current Top Articles For: {month} {day}, {year} \n\n\n{id_one} - {title_one}\n{short_url_1}\n\n{id_two} - {title_two}\n{short_url_2}\n\n{id_three} - {title_three}\n{short_url_3}\n\n{id_four} - {title_four}\n{short_url_4}\n\n{id_five} - {title_five}\n{short_url_5}",
-    #                     from_='+19108074989',
-    #                     to='+18173082476'
-    #                 )
+    URL = 'https://api.weatherapi.com/v1/forecast.json?key=58860c9ca7bf4e2b8b613232222402&q=Grand Prairie&days=1&aqi=no&alerts=no'
 
-    print(message.sid)
+    response = requests.get(URL)
+
+    max_temp = round(response.json().get("forecast").get("forecastday")[0].get("day").get("maxtemp_f"))
+    min_temp = round(response.json().get("forecast").get("forecastday")[0].get("day").get("mintemp_f"))
+    wind = response.json().get("forecast").get("forecastday")[0].get("day").get("maxwind_mph")
+    text = response.json().get("forecast").get("forecastday")[0].get("day").get("condition").get("text")
+
+    rain = round(response.json().get("forecast").get("forecastday")[0].get("day").get("daily_chance_of_rain"))
+    snow = round(response.json().get("forecast").get("forecastday")[0].get("day").get("daily_chance_of_snow"))
+
+    if rain > 1 and snow < 1:
+        message = client.messages \
+                        .create(
+                            body=f"Current Top Articles For: {month} {day}, {year} \n\n\n{id_one} - {title_one}\n{short_url_1}\n\n{id_two} - {title_two}\n{short_url_2}\n\n{id_three} - {title_three}\n{short_url_3}\n\n{id_four} - {title_four}\n{short_url_4}\n\n{id_five} - {title_five}\n{short_url_5}\n\n\nWEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind} mph\nRain - {rain}%",
+                            from_='+19108074989',
+                            to='+18179751776'
+                        )
+        print(message.sid)
+
+        message2 = client.messages \
+                        .create(
+                            body=f"Current Top Articles For: {month} {day}, {year} \n\n\n{id_one} - {title_one}\n{short_url_1}\n\n{id_two} - {title_two}\n{short_url_2}\n\n{id_three} - {title_three}\n{short_url_3}\n\n{id_four} - {title_four}\n{short_url_4}\n\n{id_five} - {title_five}\n{short_url_5}\n\n\nWEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind} mph\nRain - {rain}%",
+                            from_='+19108074989',
+                            to='+18173082476'
+                        )
+        print(message2.sid)
+
+    elif rain < 1 and snow > 1:
+        message = client.messages \
+                        .create(
+                            body=f"Current Top Articles For: {month} {day}, {year} \n\n\n{id_one} - {title_one}\n{short_url_1}\n\n{id_two} - {title_two}\n{short_url_2}\n\n{id_three} - {title_three}\n{short_url_3}\n\n{id_four} - {title_four}\n{short_url_4}\n\n{id_five} - {title_five}\n{short_url_5}\n\n\nWEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind} mph\nSnow - {snow}%",
+                            from_='+19108074989',
+                            to='+18179751776'
+                        )
+        print(message.sid)
+
+        message2 = client.messages \
+                        .create(
+                            body=f"Current Top Articles For: {month} {day}, {year} \n\n\n{id_one} - {title_one}\n{short_url_1}\n\n{id_two} - {title_two}\n{short_url_2}\n\n{id_three} - {title_three}\n{short_url_3}\n\n{id_four} - {title_four}\n{short_url_4}\n\n{id_five} - {title_five}\n{short_url_5}\n\n\nWEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind} mph\nSnow - {snow}%",
+                            from_='+19108074989',
+                            to='+18173082476'
+                        )
+        print(message2.sid)    
+
+    elif rain > 1 and snow > 1:
+        message = client.messages \
+                        .create(
+                            body=f"Current Top Articles For: {month} {day}, {year} \n\n\n{id_one} - {title_one}\n{short_url_1}\n\n{id_two} - {title_two}\n{short_url_2}\n\n{id_three} - {title_three}\n{short_url_3}\n\n{id_four} - {title_four}\n{short_url_4}\n\n{id_five} - {title_five}\n{short_url_5}\n\n\nWEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind} mph\nRain - {rain}%\nSnow - {snow}%",
+                            from_='+19108074989',
+                            to='+18179751776'
+                        )
+        print(message.sid)
+
+        message2 = client.messages \
+                        .create(
+                            body=f"Current Top Articles For: {month} {day}, {year} \n\n\n{id_one} - {title_one}\n{short_url_1}\n\n{id_two} - {title_two}\n{short_url_2}\n\n{id_three} - {title_three}\n{short_url_3}\n\n{id_four} - {title_four}\n{short_url_4}\n\n{id_five} - {title_five}\n{short_url_5}\n\n\nWEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind} mph\nRain - {rain}%\nSnow - {snow}%",
+                            from_='+19108074989',
+                            to='+18173082476'
+                        )
+        print(message2.sid)
+
+    else:
+        message = client.messages \
+                        .create(
+                            body=f"Current Top Articles For: {month} {day}, {year} \n\n\n{id_one} - {title_one}\n{short_url_1}\n\n{id_two} - {title_two}\n{short_url_2}\n\n{id_three} - {title_three}\n{short_url_3}\n\n{id_four} - {title_four}\n{short_url_4}\n\n{id_five} - {title_five}\n{short_url_5}\n\n\nWEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind} mph",
+                            from_='+19108074989',
+                            to='+18179751776'
+                        )
+        print(message.sid)
+
+        message2 = client.messages \
+                        .create(
+                            body=f"Current Top Articles For: {month} {day}, {year} \n\n\n{id_one} - {title_one}\n{short_url_1}\n\n{id_two} - {title_two}\n{short_url_2}\n\n{id_three} - {title_three}\n{short_url_3}\n\n{id_four} - {title_four}\n{short_url_4}\n\n{id_five} - {title_five}\n{short_url_5}\n\n\nWEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind} mph",
+                            from_='+19108074989',
+                            to='+18173082476'
+                        )
+        print(message2.sid)
 
     time.sleep(82800)
 
