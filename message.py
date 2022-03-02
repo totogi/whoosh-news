@@ -4,6 +4,7 @@ import json
 import time
 import schedule
 from twilio.rest import Client
+from random import randint
 
 def get_time():
     month_name = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May", 6:"June", 7:"July", 8:"August", 9:"September", 10:"October", 11:"November", 12:"December"}
@@ -16,6 +17,13 @@ def get_time():
     month = month_name.get(month_num)
 
     return(f"{month} {day}, {year}")
+
+def get_quote():
+    with open('quotes.json', encoding='utf-8') as fp:
+        data = json.load(fp)
+        quotes = data["quotes"]
+        random_index = randint(0, len(quotes)-1)
+        return f"{quotes[random_index]['quote']} - {quotes[random_index]['author']}"
 
 def get_weather():
     URL = 'https://api.weatherapi.com/v1/forecast.json?key=58860c9ca7bf4e2b8b613232222402&q=Grand Prairie&days=1&aqi=no&alerts=no'
@@ -116,7 +124,7 @@ def del_links():
         requests.delete(f"https://api.rebrandly.com/v1/links/{get_request('five')[0]['id']}", 
         headers=requestHeaders)
     except:
-        print("ERROR ON LINK DELETION")
+        return
 
 def grab_and_send():
     account_sid = 'AC745b3d471c3796f0653026c1bc26ba7d'
@@ -126,7 +134,7 @@ def grab_and_send():
     numbers_to_message = ['+18179751776', '+18173082476']
     for number in numbers_to_message:
         client.messages.create(
-            body = f'Current Top Articles For: {get_time()}\n\n\n{news()}\n\n\n{get_weather()}',
+            body = f'Current Top Articles For: {get_time()}\n\n\n{get_quote()}\n\n\n{get_weather()}\n\n\n{news()}',
             from_ = '+19108074989',
             to = f'{number}'
         )
