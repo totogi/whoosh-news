@@ -24,23 +24,25 @@ def get_weather():
 
     max_temp = round(response.json().get("forecast").get("forecastday")[0].get("day").get("maxtemp_f"))
     min_temp = round(response.json().get("forecast").get("forecastday")[0].get("day").get("mintemp_f"))
-    wind = response.json().get("forecast").get("forecastday")[0].get("day").get("maxwind_mph")
+    wind_speed = response.json().get("forecast").get("forecastday")[0].get("day").get("maxwind_mph")
+    wind_dir = response.json().get("current").get("wind_dir")
     text = response.json().get("forecast").get("forecastday")[0].get("day").get("condition").get("text")
+    wind = f'{wind_speed} mph {wind_dir}'
 
     rain = round(response.json().get("forecast").get("forecastday")[0].get("day").get("daily_chance_of_rain"))
     snow = round(response.json().get("forecast").get("forecastday")[0].get("day").get("daily_chance_of_snow"))
 
     if rain > 1 and snow < 1:
-        return(f"WEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind} mph\nRain - {rain}%")
+        return(f"WEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind}\nRain - {rain}%")
     
     elif snow > 1 and rain < 1:
-        return(f"WEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind} mph\nSnow - {snow}%")
+        return(f"WEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind}\nSnow - {snow}%")
 
     elif rain > 1 and snow > 1:
-        return(f"WEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind} mph\nRain - {rain}%\nSnow - {snow}%")
+        return(f"WEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind}\nRain - {rain}%\nSnow - {snow}%")
     
     else:
-        return(f"WEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind} mph")
+        return(f"WEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind}")
 
 URL = 'https://newsapi.org/v2/top-headlines?sources=bcc-news,associated-press,reuters,the-wall-street-journal&apiKey=8a39aada2dd443caaabf84c4fae03cc8'
 
@@ -52,39 +54,27 @@ requestHeaders = {
     "workspace": "9fc8b4f6b1224ac59dbdaed9d1d9f2ce"
 }
 
-def get_url(url):
-    url_one = response.json().get("articles")[0].get("url")
-    url_two = response.json().get("articles")[1].get("url")
-    url_three = response.json().get("articles")[2].get("url")
-    url_four = response.json().get("articles")[3].get("url")
-    url_five = response.json().get("articles")[4].get("url")
-    if url == "url_one":
-        return(url_one)
-    elif url == "url_two":
-        return(url_two)
-    elif url == "url_three":
-        return(url_three)
-    elif url == "url_four":
-        return(url_four)
-    elif url == "url_five":
-        return(url_five)
+def get_url(x):
+    url = response.json().get("articles")[x].get("url")
+    return url
 
 def request_link(url, art_num):
     return{
-        "destination": f"{get_url(f'{url}')}", 
+        "destination": f"{get_url(url)}", 
         "domain": { "fullName": "news.pkmeiner.com" },
         "slashtag": f"article-{art_num}"
     }
 
 def post_request(url, art_num):
     r = requests.post("https://api.rebrandly.com/v1/links", 
-        data = json.dumps(request_link(f'{url}', f'{art_num}')),
+        data = json.dumps(request_link(url, f'{art_num}')),
         headers=requestHeaders)
 
     return(r.json())
 
 def news():
     try:
+        del_links()
         id_one = response.json().get("articles")[0].get("source").get("name")
         id_two = response.json().get("articles")[1].get("source").get("name")
         id_three = response.json().get("articles")[2].get("source").get("name")
@@ -97,15 +87,15 @@ def news():
         title_four = response.json().get("articles")[3].get("title")
         title_five = response.json().get("articles")[4].get("title")
 
-        short_url_1 = f"https://{post_request('url_one', 'one')['shortUrl']}"
-        short_url_2 = f"https://{post_request('url_two', 'two')['shortUrl']}"
-        short_url_3 = f"https://{post_request('url_three', 'three')['shortUrl']}"
-        short_url_4 = f"https://{post_request('url_four', 'four')['shortUrl']}"
-        short_url_5 = f"https://{post_request('url_five', 'five')['shortUrl']}"
+        short_url_1 = f"https://{post_request(0, 'one')['shortUrl']}"
+        short_url_2 = f"https://{post_request(1, 'two')['shortUrl']}"
+        short_url_3 = f"https://{post_request(2, 'three')['shortUrl']}"
+        short_url_4 = f"https://{post_request(3, 'four')['shortUrl']}"
+        short_url_5 = f"https://{post_request(4, 'five')['shortUrl']}"
 
         return(f"{id_one} - {title_one}\n{short_url_1}\n\n{id_two} - {title_two}\n{short_url_2}\n\n{id_three} - {title_three}\n{short_url_3}\n\n{id_four} - {title_four}\n{short_url_4}\n\n{id_five} - {title_five}\n{short_url_5}")
     except:
-        del_links()
+        return "API DOWN/CODE BROKEN"
 
 def get_request(art_num):
     r = requests.get(f"https://api.rebrandly.com/v1/links?domain.fullName=news.pkmeiner.com&slashtag=article-{art_num}", 
@@ -114,49 +104,35 @@ def get_request(art_num):
     return r.json()
 
 def del_links():
-    requests.delete(f"https://api.rebrandly.com/v1/links/{get_request('one')[0]['id']}", 
-    headers=requestHeaders)
-    requests.delete(f"https://api.rebrandly.com/v1/links/{get_request('two')[0]['id']}", 
-    headers=requestHeaders)
-    requests.delete(f"https://api.rebrandly.com/v1/links/{get_request('three')[0]['id']}", 
-    headers=requestHeaders)
-    requests.delete(f"https://api.rebrandly.com/v1/links/{get_request('four')[0]['id']}",  
-    headers=requestHeaders)
-    requests.delete(f"https://api.rebrandly.com/v1/links/{get_request('five')[0]['id']}", 
-    headers=requestHeaders)
-
+    try:
+        requests.delete(f"https://api.rebrandly.com/v1/links/{get_request('one')[0]['id']}", 
+        headers=requestHeaders)
+        requests.delete(f"https://api.rebrandly.com/v1/links/{get_request('two')[0]['id']}", 
+        headers=requestHeaders)
+        requests.delete(f"https://api.rebrandly.com/v1/links/{get_request('three')[0]['id']}", 
+        headers=requestHeaders)
+        requests.delete(f"https://api.rebrandly.com/v1/links/{get_request('four')[0]['id']}",  
+        headers=requestHeaders)
+        requests.delete(f"https://api.rebrandly.com/v1/links/{get_request('five')[0]['id']}", 
+        headers=requestHeaders)
+    except:
+        return("ERROR ON LINK DELETION")
 
 def grab_and_send():
     account_sid = 'AC745b3d471c3796f0653026c1bc26ba7d'
     auth_token = 'b715d4a19b17c714358e51f80e70842a'
     client = Client(account_sid, auth_token)
 
-    print(get_time())
-    print(news())
-    print(get_weather())
+    numbers_to_message = ['+18179751776', '+18173082476']
+    for number in numbers_to_message:
+        client.messages.create(
+            body = f'Current Top Articles For: {get_time()}\n\n\n{news()}\n\n\n{get_weather()}',
+            from_ = '+19108074989',
+            to = f'{number}'
+        )
 
-
-    # message = client.messages \
-    #                 .create(
-    #                     body=f"Current Top Articles For: {get_time()}\n\n\n{news()}\n\n\n{get_weather()}",
-    #                     from_='+19108074989',
-    #                     to='+18179751776'
-    #                 )
-    # print(message.sid)
-
-    # message2 = client.messages \
-    #                 .create(
-    #                     body=f"Current Top Articles For: {get_time()} \n\n\n{news()}\n\n\n{get_weather()}",
-    #                     from_='+19108074989',
-    #                     to='+18173082476'
-    #                 )
-    # print(message2.sid)
-
-
-    time.sleep(5)
-    del_links()
-
-schedule.every().day.at("23:13").do(grab_and_send)
+schedule.every().day.at("08:43").do(grab_and_send)
+schedule.every().day.at("08:44").do(del_links)
 
 while True:
     schedule.run_pending()
