@@ -7,9 +7,10 @@ from twilio.rest import Client
 from random import randint
 import os
 from dotenv import load_dotenv
-load_dotenv('/.env')
+load_dotenv('.env')
 news_api_key = os.getenv('NEWS_API_KEY')
 weather_api_key = os.getenv('WEATHER_API_KEY')
+zip_code = os.getenv("ZIP_CODE")
 rebrandly_api_key = os.getenv('REBRANDLY_API_KEY')
 rebrandly_workspace = os.getenv('REBRANDLY_WORKSPACE')
 twilio_account_sid = os.getenv('TWILIO_ACCOUNT_SID')
@@ -17,8 +18,8 @@ twilio_auth_token = os.getenv('TWILIO_AUTH_TOKEN')
 number_1 = os.getenv('NUMBER_1')
 number_2 = os.getenv('NUMBER_2')
 from_number = os.getenv('FROM_NUMBER')
-time_to_send = "13:06"
-time_to_del = "10:00"
+time_to_send = os.getenv('TIME_TO_SEND')
+time_to_del = os.getenv('TIME_TO_DEL')
 
 def get_time():
     month_name = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May", 6:"June", 7:"July", 8:"August", 9:"September", 10:"October", 11:"November", 12:"December"}
@@ -40,7 +41,7 @@ def get_quote():
         return f"{quotes[random_index]['quote']} - {quotes[random_index]['author']}"
 
 def get_weather():
-    URL = f'https://api.weatherapi.com/v1/forecast.json?key={weather_api_key}&q=Grand Prairie&days=1&aqi=no&alerts=no'
+    URL = f'https://api.weatherapi.com/v1/forecast.json?key={weather_api_key}&q={zip_code}&days=1&aqi=no&alerts=no'
 
     response = requests.get(URL)
 
