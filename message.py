@@ -5,6 +5,20 @@ import time
 import schedule
 from twilio.rest import Client
 from random import randint
+import os
+from dotenv import load_dotenv
+load_dotenv('/.env')
+news_api_key = os.getenv('NEWS_API_KEY')
+weather_api_key = os.getenv('WEATHER_API_KEY')
+rebrandly_api_key = os.getenv('REBRANDLY_API_KEY')
+rebrandly_workspace = os.getenv('REBRANDLY_WORKSPACE')
+twilio_account_sid = os.getenv('TWILIO_ACCOUNT_SID')
+twilio_auth_token = os.getenv('TWILIO_AUTH_TOKEN')
+number_1 = os.getenv('NUMBER_1')
+number_2 = os.getenv('NUMBER_2')
+from_number = os.getenv('FROM_NUMBER')
+time_to_send = "13:06"
+time_to_del = "10:00"
 
 def get_time():
     month_name = {1:"January", 2:"February", 3:"March", 4:"April", 5:"May", 6:"June", 7:"July", 8:"August", 9:"September", 10:"October", 11:"November", 12:"December"}
@@ -26,7 +40,7 @@ def get_quote():
         return f"{quotes[random_index]['quote']} - {quotes[random_index]['author']}"
 
 def get_weather():
-    URL = 'https://api.weatherapi.com/v1/forecast.json?key=58860c9ca7bf4e2b8b613232222402&q=Grand Prairie&days=1&aqi=no&alerts=no'
+    URL = f'https://api.weatherapi.com/v1/forecast.json?key={weather_api_key}&q=Grand Prairie&days=1&aqi=no&alerts=no'
 
     response = requests.get(URL)
 
@@ -52,14 +66,14 @@ def get_weather():
     else:
         return(f"WEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind}")
 
-URL = 'https://newsapi.org/v2/top-headlines?sources=bcc-news,associated-press,reuters&apiKey=8a39aada2dd443caaabf84c4fae03cc8'
+URL = f'https://newsapi.org/v2/top-headlines?sources=bcc-news,associated-press,reuters&apiKey={news_api_key}'
 
 response = requests.get(URL)
 
 requestHeaders = {
     "Content-type": "application/json",
-    "apikey": "a654e5313c8d4d89980a508fb67979b5",
-    "workspace": "9fc8b4f6b1224ac59dbdaed9d1d9f2ce"
+    "apikey": f"{rebrandly_api_key}",
+    "workspace": f"{rebrandly_workspace}"
 }
 
 def get_url(x):
@@ -127,20 +141,20 @@ def del_links():
         return
 
 def grab_and_send():
-    account_sid = 'AC745b3d471c3796f0653026c1bc26ba7d'
-    auth_token = 'b715d4a19b17c714358e51f80e70842a'
+    account_sid = f'{twilio_account_sid}'
+    auth_token = f'{twilio_auth_token}'
     client = Client(account_sid, auth_token)
 
-    numbers_to_message = ['+18179751776', '+18173082476']
+    numbers_to_message = [f'{number_1}']
     for number in numbers_to_message:
         client.messages.create(
             body = f'Current Top Articles For: {get_time()}\n\n\n{get_quote()}\n\n\n{get_weather()}\n\n\n{news()}',
-            from_ = '+19108074989',
+            from_ = f'{from_number}',
             to = f'{number}'
         )
 
-schedule.every().day.at("11:00").do(grab_and_send)
-schedule.every().day.at("10:00").do(del_links)
+schedule.every().day.at(time_to_send).do(grab_and_send)
+schedule.every().day.at(time_to_del).do(del_links)
 
 while True:
     schedule.run_pending()
