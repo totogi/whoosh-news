@@ -146,7 +146,7 @@ def grab_and_send():
     auth_token = f'{twilio_auth_token}'
     client = Client(account_sid, auth_token)
 
-    numbers_to_message = [f'{number_1}']
+    numbers_to_message = [f'{number_1}', f'{number_2}']
     for number in numbers_to_message:
         client.messages.create(
             body = f'Current Top Articles For: {get_time()}\n\n\n{get_quote()}\n\n\n{get_weather()}\n\n\n{news()}',
