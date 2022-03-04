@@ -52,7 +52,7 @@ def get_weather():
     else:
         return(f"WEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind}")
 
-URL = 'https://newsapi.org/v2/top-headlines?sources=bcc-news,associated-press,reuters,the-wall-street-journal&apiKey=8a39aada2dd443caaabf84c4fae03cc8'
+URL = 'https://newsapi.org/v2/top-headlines?sources=bcc-news,associated-press,reuters&apiKey=8a39aada2dd443caaabf84c4fae03cc8'
 
 response = requests.get(URL)
 
