@@ -38,7 +38,7 @@ def get_quote():
         data = json.load(fp)
         quotes = data["quotes"]
         random_index = randint(0, len(quotes)-1)
-        return f"{quotes[random_index]['quote']} - {quotes[random_index]['author']}"
+        return quotes[random_index]['quote']
 
 def get_weather():
     URL = f'https://api.weatherapi.com/v1/forecast.json?key={weather_api_key}&q={zip_code}&days=1&aqi=no&alerts=no'
@@ -56,18 +56,18 @@ def get_weather():
     snow = round(response.json().get("forecast").get("forecastday")[0].get("day").get("daily_chance_of_snow"))
 
     if rain > 1 and snow < 1:
-        return(f"WEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind}\nRain - {rain}%")
+        return(f"WEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}°F\nLow Temp. - {min_temp}°F\nWind - {wind}\nRain - {rain}%")
     
     elif snow > 1 and rain < 1:
-        return(f"WEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind}\nSnow - {snow}%")
+        return(f"WEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}°F\nLow Temp. - {min_temp}°F\nWind - {wind}\nSnow - {snow}%")
 
     elif rain > 1 and snow > 1:
-        return(f"WEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind}\nRain - {rain}%\nSnow - {snow}%")
+        return(f"WEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}°F\nLow Temp. - {min_temp}°F\nWind - {wind}\nRain - {rain}%\nSnow - {snow}%")
     
     else:
-        return(f"WEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}\nLow Temp. - {min_temp}\nWind - {wind}")
+        return(f"WEATHER\n\nCondition - {text}\nHigh Temp. - {max_temp}°F\nLow Temp. - {min_temp}°F\nWind - {wind}")
 
-URL = f'https://newsapi.org/v2/top-headlines?sources=bcc-news,associated-press,reuters&apiKey={news_api_key}'
+URL = f'https://newsapi.org/v2/top-headlines?sources=bbc-news,associated-press,reuters&apiKey={news_api_key}'
 
 response = requests.get(URL)
 
@@ -158,5 +158,5 @@ schedule.every().day.at(time_to_send).do(grab_and_send)
 schedule.every().day.at(time_to_del).do(del_links)
 
 while True:
-    schedule.run_pending()
+    #schedule.run_pending()
     time.sleep(1)
