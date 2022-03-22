@@ -1,4 +1,4 @@
-# News Messenger (PA)
+# News Messenger (twilio-news)
 ## News Messenger sends the current news and weather, along with an affirmation using the Twilio API. Links can also be shortened using personal or non personal domains with the rebrandly.com API
 
 ### Setup:
