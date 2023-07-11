@@ -13,8 +13,8 @@ weather_api_key = os.getenv('WEATHER_API_KEY')
 zip_code = os.getenv("ZIP_CODE")
 rebrandly_api_key = os.getenv('REBRANDLY_API_KEY')
 rebrandly_workspace = os.getenv('REBRANDLY_WORKSPACE')
-twilio_account_sid = os.getenv('TWILIO_ACCOUNT_SID')
-twilio_auth_token = os.getenv('TWILIO_AUTH_TOKEN')
+twilio_account_sid = os.getenv('ACCOUNT_SID')
+twilio_auth_token = os.getenv('AUTH_TOKEN')
 number_1 = os.getenv('NUMBER_1')
 number_2 = os.getenv('NUMBER_2')
 from_number = os.getenv('FROM_NUMBER')
@@ -154,9 +154,11 @@ def grab_and_send():
             to = f'{number}'
         )
 
-schedule.every().day.at(time_to_send).do(grab_and_send)
-schedule.every().day.at(time_to_del).do(del_links)
+grab_and_send()
+#del_links()
+#schedule.every().day.at(time_to_send).do(grab_and_send)
+#schedule.every().day.at(time_to_del).do(del_links)
 
-while True:
-    #schedule.run_pending()
-    time.sleep(1)
+#while True:
+#schedule.run_pending()
+#time.sleep(1)
