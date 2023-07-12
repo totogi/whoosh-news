@@ -110,11 +110,18 @@ def news():
         title_four = response.json().get("articles")[3].get("title")
         title_five = response.json().get("articles")[4].get("title")
 
-        short_url_1 = f"https://{post_request(0, 'one')['shortUrl']}"
-        short_url_2 = f"https://{post_request(1, 'two')['shortUrl']}"
-        short_url_3 = f"https://{post_request(2, 'three')['shortUrl']}"
-        short_url_4 = f"https://{post_request(3, 'four')['shortUrl']}"
-        short_url_5 = f"https://{post_request(4, 'five')['shortUrl']}"
+        ### Disabling rebrandly and reducing number of news articles
+        
+        # short_url_1 = f"https://{post_request(0, 'one')['shortUrl']}"
+        # short_url_2 = f"https://{post_request(1, 'two')['shortUrl']}"
+        # short_url_3 = f"https://{post_request(2, 'three')['shortUrl']}"
+        # short_url_4 = f"https://{post_request(3, 'four')['shortUrl']}"
+        # short_url_5 = f"https://{post_request(4, 'five')['shortUrl']}"
+        short_url_1 = get_url(0)
+        short_url_2 = get_url(1)
+        short_url_3 = get_url(2)
+        short_url_4 = get_url(3)
+        short_url_5 = get_url(4)
 
         return(f"{id_one} - {title_one}\n{short_url_1}\n\n{id_two} - {title_two}\n{short_url_2}\n\n{id_three} - {title_three}\n{short_url_3}\n\n{id_four} - {title_four}\n{short_url_4}\n\n{id_five} - {title_five}\n{short_url_5}")
     except:
@@ -155,7 +162,9 @@ def grab_and_send():
         )
 
 grab_and_send()
-#del_links()
+
+### Disabling rebrandly and schedule
+
 #schedule.every().day.at(time_to_send).do(grab_and_send)
 #schedule.every().day.at(time_to_del).do(del_links)
 
